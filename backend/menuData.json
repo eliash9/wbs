@@ -1,0 +1,57 @@
+{
+    "menu_utama": {
+        "response": "Selamat datang di layanan kami!\n1. Produk\n2. Jam Buka\n3. Hubungi Kami\n\nKetik nomor untuk memilih menu.",
+        "next": {
+            "1": "produk",
+            "2": "jam_buka",
+            "3": "hubungi_kami",            
+            "0": "menu_utama",
+            "menu":"menu_utama"
+        }
+    },
+    "produk": {
+        "response": "Pilih produk:\n1a. Produk A\n1b. Produk B\n1c. Produk C\n0. Kembali ke Menu Utama",
+        "next": {
+            "1a": "produk_a",
+            "1b": "produk_b",
+            "1c": "produk_c",
+            "0": "menu_utama",
+            "menu":"menu_utama"
+        }
+    },
+    "produk_a": {
+        "response": "Produk A adalah produk terbaik kami. Harga: Rp 100.000.\n\nKetik 0 untuk kembali ke Menu Utama.",
+        "next": {
+            "0": "menu_utama",
+            "menu":"menu_utama"
+        }
+    },
+    "produk_b": {
+        "response": "Produk B adalah pilihan yang tepat. Harga: Rp 200.000.\n\nKetik 0 untuk kembali ke Menu Utama.",
+        "next": {
+            "0": "menu_utama",
+            "menu":"menu_utama"
+        }
+    },
+    "produk_c": {
+        "response": "Produk C adalah pilihan premium. Harga: Rp 500.000.\n\nKetik 0 untuk kembali ke Menu Utama.",
+        "next": {
+            "0": "menu_utama",
+            "menu":"menu_utama"
+        }
+    },
+    "jam_buka": {
+        "response": "Kami buka setiap hari pukul 09:00 hingga 18:00.\n\nKetik 0 untuk kembali ke Menu Utama.",
+        "next": {
+            "0": "menu_utama",
+            "menu":"menu_utama"
+        }
+    },
+    "hubungi_kami": {
+        "response": "Hubungi kami di support@example.com atau telepon di 123-456-789.\n\nKetik 0 untuk kembali ke Menu Utama.",
+        "next": {
+            "0": "menu_utama",
+            "menu":"menu_utama"
+        }
+    }
+}

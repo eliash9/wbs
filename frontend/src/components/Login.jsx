@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
+import api from "../api/axios";
 
 const Login = ({ onLogin }) => {
   const [username, setUsername] = useState("");
@@ -11,15 +12,17 @@ const Login = ({ onLogin }) => {
     e.preventDefault();
     setIsLoading(true);
 
+
     try {
-      const response = await axios.post(
-        "http://143.198.189.228:8989/api/login",
+      const response = await api.post(
+        "/api/login",
         {
           username,
           password,
         }
       );
 
+      
       localStorage.setItem("authToken", response.data.token);
       toast.success("Login successful!");
       onLogin();

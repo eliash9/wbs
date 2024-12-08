@@ -7,7 +7,7 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
-
+//const menuData = require('./commands.json');
 const app = express();
 
 const cleanupFile = (filePath) => {
@@ -94,13 +94,30 @@ const client = new Client({
 });
 let qrCode = null;
 let isClientReady = false;
+let codePairing = null;
 
+let pairingCodeRequested = false;
 // WhatsApp client events
-client.on("qr", (qr) => {
+client.on("qr", async (qr) => {
   qrCode = qr;
   qrcode.generate(qr, { small: true });
 
   console.log("New QR code generated");
+
+  // paiuting code example
+  const pairingCodeEnabled = true;
+  if (pairingCodeEnabled && !pairingCodeRequested) {
+    const pairingCode = await client.requestPairingCode(
+      process.env.PAIRING_NUMBER
+    ); // enter the target phone number
+    console.log("Pairing code enabled, code: " + pairingCode);
+    codePairing =
+      "for number " +
+      process.env.PAIRING_NUMBER +
+      " pairing code: " +
+      pairingCode;
+    pairingCodeRequested = true;
+  }
 });
 
 client.on("ready", () => {
@@ -110,6 +127,45 @@ client.on("ready", () => {
   qrCode = null;
   console.log("WhatsApp client is ready!");
 });
+
+//auto response
+
+// Baca file JSON
+const menuData = JSON.parse(fs.readFileSync("./menuData.json", "utf-8"));
+
+const userSessions = {}; // Objek untuk menyimpan status pengguna sementara
+
+client.on("message", async (message) => {
+  const userId = message.from;
+  const receivedText = message.body.toLowerCase().trim();
+
+  let chat = await message.getChat();
+
+  let contact = await chat.getContact();
+
+  if (contact.isGroup === true) {
+    console.log("Ignoring group message");
+    return;
+  } else {
+    if (!userSessions[userId]) {
+      // Jika pengguna baru, tetapkan ke menu utama
+      userSessions[userId] = "menu_utama";
+    }
+
+    const currentSession = userSessions[userId];
+    const currentMenu = menuData[currentSession];
+
+    if (currentMenu.next && currentMenu.next[receivedText]) {
+      userSessions[userId] = currentMenu.next[receivedText]; // Perbarui status
+      const nextMenu = menuData[userSessions[userId]];
+      message.reply(nextMenu.response);
+    } else {
+      message.reply("Ketik 0 atau menu untuk kembali ke menu utama.");
+    }
+  }
+});
+
+//end
 
 client.on("disconnected", () => {
   isClientReady = false;
@@ -130,6 +186,7 @@ app.get("/api/whatsapp-status", authenticateToken, (req, res) => {
   res.json({
     isConnected: isClientReady,
     qrCode: !isClientReady ? qrCode : null,
+    codePairing: !isClientReady ? codePairing : null,
   });
 });
 

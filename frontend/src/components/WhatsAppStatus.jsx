@@ -2,18 +2,20 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { QRCodeSVG } from "qrcode.react"; // Changed this line
+import api from "../api/axios";
 
 const WhatsAppStatus = () => {
   const [status, setStatus] = useState({
     isConnected: false,
     qrCode: null,
+    codePairing: null,
   });
   const [isLoading, setIsLoading] = useState(true);
 
   const checkStatus = async () => {
     try {
-      const response = await axios.get(
-        "http://143.198.189.228:8989/api/whatsapp-status",
+      const response = await api.get(
+        "/api/whatsapp-status",
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -64,6 +66,7 @@ const WhatsAppStatus = () => {
           <div className="text-yellow-600 mb-4">
             WhatsApp not connected. Please scan the QR code with your phone:
           </div>
+         
           {status.qrCode ? (
             <div className="flex justify-center">
               <QRCodeSVG value={status.qrCode} size={256} />{" "}
@@ -79,6 +82,12 @@ const WhatsAppStatus = () => {
               <li>Point your phone to this screen to capture the QR code</li>
             </ol>
           </div>
+          {status.codePairing && (
+            <div className="text-sm font-semibold text-gray-600 mt-10">
+              or check for pairing code: {status.codePairing}
+            </div>
+          )}
+
         </div>
       )}
     </div>

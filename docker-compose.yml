@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "8989:8989" # Port host:container
+    volumes:
+      - ./backend:/app # Sinkronisasi file lokal dengan container
+    environment:
+      - NODE_ENV=development
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "5173:80" # Port host:container
+    volumes:
+      - ./frontend:/app # Sinkronisasi file lokal dengan container
+    environment:
+      - NODE_ENV=production

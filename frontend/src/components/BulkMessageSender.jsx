@@ -3,6 +3,7 @@ import Papa from "papaparse";
 import toast from "react-hot-toast";
 import axios from "axios";
 import WhatsAppStatus from "./WhatsAppStatus";
+import api from "../api/axios";
 
 const BulkMessageSender = () => {
   const [contacts, setContacts] = useState([]);
@@ -155,8 +156,8 @@ const BulkMessageSender = () => {
         formData.append("mediaType", mediaType);
       }
 
-      const response = await axios.post(
-        "http://143.198.189.228:8989/api/send-messages",
+      const response = await api.post(
+        "/api/send-messages",
         formData,
         {
           headers: {
