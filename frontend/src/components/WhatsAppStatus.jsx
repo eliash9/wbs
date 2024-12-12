@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { QRCodeSVG } from "qrcode.react"; // Changed this line
+
+import PairingForm from "./PairingCode";
 import api from "../api/axios";
 
 const WhatsAppStatus = () => {
@@ -66,6 +68,7 @@ const WhatsAppStatus = () => {
           <div className="text-yellow-600 mb-4">
             WhatsApp not connected. Please scan the QR code with your phone:
           </div>
+          
          
           {status.qrCode ? (
             <div className="flex justify-center">
@@ -82,11 +85,11 @@ const WhatsAppStatus = () => {
               <li>Point your phone to this screen to capture the QR code</li>
             </ol>
           </div>
-          {status.codePairing && (
-            <div className="text-sm font-semibold text-gray-600 mt-10">
-              or check for pairing code: {status.codePairing}
-            </div>
-          )}
+          <div className="text-yellow-600 mb-4 mt-4">
+            Use Your Phone Number:
+          </div>
+          <PairingForm /> 
+        
 
         </div>
       )}

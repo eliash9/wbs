@@ -7,7 +7,6 @@ const jwt = require("jsonwebtoken");
 const multer = require("multer");
 const fs = require("fs");
 const path = require("path");
-//const menuData = require('./commands.json');
 const app = express();
 
 const cleanupFile = (filePath) => {
@@ -86,24 +85,28 @@ const authenticateToken = (req, res, next) => {
   });
 };
 
+
 // WhatsApp client setup
 const client = new Client({
   puppeteer: {
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   },
 });
+
+
 let qrCode = null;
 let isClientReady = false;
 let codePairing = null;
 
 let pairingCodeRequested = false;
 // WhatsApp client events
+
 client.on("qr", async (qr) => {
   qrCode = qr;
   qrcode.generate(qr, { small: true });
 
   console.log("New QR code generated");
-
+/*
   // paiuting code example
   const pairingCodeEnabled = true;
   if (pairingCodeEnabled && !pairingCodeRequested) {
@@ -118,7 +121,35 @@ client.on("qr", async (qr) => {
       pairingCode;
     pairingCodeRequested = true;
   }
+*/
 });
+
+  
+
+// Endpoint untuk menerima pairing code
+app.post('/pairing', async (req, res) => {
+  const { pairingNumber } = req.body;
+  console.log("Nomor: " + pairingNumber);
+  if (!pairingNumber) {
+    return res.status(400).send({ message: 'Pairing number is required' });
+  }
+
+  try {
+    // Panggil fungsi pairing dengan nomor yang diberikan
+    const pairingCode = await client.requestPairingCode(pairingNumber);
+    res.status(200).send({ pairingCode });
+
+    console.log("Pairing code enabled, code: " + pairingCode);
+    
+    pairingCodeRequested = true;
+
+
+  } catch (error) {
+    console.error('Error requesting pairing code:', error);
+    res.status(500).send({ message: 'Failed to request pairing code' });
+  }
+});
+
 
 client.on("ready", () => {
   console.log("WhatsApp client is being ready!");
