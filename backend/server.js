@@ -96,7 +96,7 @@ const client = new Client({
 
 let qrCode = null;
 let isClientReady = false;
-let codePairing = null;
+//let codePairing = null;
 
 let pairingCodeRequested = false;
 // WhatsApp client events
@@ -106,22 +106,7 @@ client.on("qr", async (qr) => {
   qrcode.generate(qr, { small: true });
 
   console.log("New QR code generated");
-/*
-  // paiuting code example
-  const pairingCodeEnabled = true;
-  if (pairingCodeEnabled && !pairingCodeRequested) {
-    const pairingCode = await client.requestPairingCode(
-      process.env.PAIRING_NUMBER
-    ); // enter the target phone number
-    console.log("Pairing code enabled, code: " + pairingCode);
-    codePairing =
-      "for number " +
-      process.env.PAIRING_NUMBER +
-      " pairing code: " +
-      pairingCode;
-    pairingCodeRequested = true;
-  }
-*/
+
 });
 
   
@@ -163,17 +148,13 @@ client.on("ready", () => {
 
 // Baca file JSON
 const menuData = JSON.parse(fs.readFileSync("./menuData.json", "utf-8"));
-
 const userSessions = {}; // Objek untuk menyimpan status pengguna sementara
 
 client.on("message", async (message) => {
   const userId = message.from;
   const receivedText = message.body.toLowerCase().trim();
-
   let chat = await message.getChat();
-
   let contact = await chat.getContact();
-
   if (contact.isGroup === true) {
     console.log("Ignoring group message");
     return;
@@ -182,7 +163,6 @@ client.on("message", async (message) => {
       // Jika pengguna baru, tetapkan ke menu utama
       userSessions[userId] = "menu_utama";
     }
-
     const currentSession = userSessions[userId];
     const currentMenu = menuData[currentSession];
 
@@ -191,7 +171,7 @@ client.on("message", async (message) => {
       const nextMenu = menuData[userSessions[userId]];
       message.reply(nextMenu.response);
     } else {
-      message.reply("Ketik 0 atau menu untuk kembali ke menu utama.");
+      message.reply("Ketik 0 untuk ke menu utama.");
     }
   }
 });
@@ -217,7 +197,7 @@ app.get("/api/whatsapp-status", authenticateToken, (req, res) => {
   res.json({
     isConnected: isClientReady,
     qrCode: !isClientReady ? qrCode : null,
-    codePairing: !isClientReady ? codePairing : null,
+   // codePairing: !isClientReady ? codePairing : null,
   });
 });
 

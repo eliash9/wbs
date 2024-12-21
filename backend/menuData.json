@@ -1,57 +1,58 @@
 {
     "menu_utama": {
-        "response": "Selamat datang di layanan kami!\n1. Produk\n2. Jam Buka\n3. Hubungi Kami\n\nKetik nomor untuk memilih menu.",
-        "next": {
-            "1": "produk",
-            "2": "jam_buka",
-            "3": "hubungi_kami",            
-            "0": "menu_utama",
-            "menu":"menu_utama"
-        }
+      "response": "Selamat datang di LAZ Sidogiri! Pilih salah satu menu:\n1. Program Kami\n2. Jam Buka\n3. Hubungi Kami\n\nKetik nomor untuk memilih menu.",
+      "next": {
+        "1": "program_kami",
+        "2": "jam_buka",
+        "3": "hubungi_kami",
+        "0": "menu_utama"
+      }
     },
-    "produk": {
-        "response": "Pilih produk:\n1a. Produk A\n1b. Produk B\n1c. Produk C\n0. Kembali ke Menu Utama",
-        "next": {
-            "1a": "produk_a",
-            "1b": "produk_b",
-            "1c": "produk_c",
-            "0": "menu_utama",
-            "menu":"menu_utama"
-        }
+    "program_kami": {
+      "response": "Program unggulan kami:\n1a. Peduli Pendidikan\n1b. Peduli Kesehatan\n1c. Peduli Dakwah\n1d. Peduli Ekonomi\n\nKetik kode untuk memilih program atau 0 untuk kembali ke Menu Utama.",
+      "next": {
+        "1a": "peduli_pendidikan",
+        "1b": "peduli_kesehatan",
+        "1c": "peduli_dakwah",
+        "1d": "peduli_ekonomi",
+        "0": "menu_utama"
+      }
     },
-    "produk_a": {
-        "response": "Produk A adalah produk terbaik kami. Harga: Rp 100.000.\n\nKetik 0 untuk kembali ke Menu Utama.",
-        "next": {
-            "0": "menu_utama",
-            "menu":"menu_utama"
-        }
+    "peduli_pendidikan": {
+      "response": "Program Peduli Pendidikan kami meliputi:\n- Beasiswa untuk pelajar dari berbagai jenjang.\n- Pemberdayaan pendidikan pesantren.\n\nKetik 0 untuk kembali ke Menu Utama.",
+      "next": {
+        "0": "menu_utama"
+      }
     },
-    "produk_b": {
-        "response": "Produk B adalah pilihan yang tepat. Harga: Rp 200.000.\n\nKetik 0 untuk kembali ke Menu Utama.",
-        "next": {
-            "0": "menu_utama",
-            "menu":"menu_utama"
-        }
+    "peduli_kesehatan": {
+      "response": "Program Peduli Kesehatan kami meliputi:\n- Bantuan layanan kesehatan gratis.\n- Penyuluhan kesehatan untuk masyarakat.\n\nKetik 0 untuk kembali ke Menu Utama.",
+      "next": {
+        "0": "menu_utama"
+      }
     },
-    "produk_c": {
-        "response": "Produk C adalah pilihan premium. Harga: Rp 500.000.\n\nKetik 0 untuk kembali ke Menu Utama.",
-        "next": {
-            "0": "menu_utama",
-            "menu":"menu_utama"
-        }
+    "peduli_dakwah": {
+      "response": "Program Peduli Dakwah kami mendukung:\n- Pemberdayaan dai di daerah terpencil.\n- Pengadaan sarana dakwah untuk masyarakat luas.\n\nKetik 0 untuk kembali ke Menu Utama.",
+      "next": {
+        "0": "menu_utama"
+      }
+    },
+    "peduli_ekonomi": {
+      "response": "Program Peduli Ekonomi kami meliputi:\n- Pembinaan UMKM lokal.\n- Bantuan modal usaha untuk keluarga prasejahtera.\n\nKetik 0 untuk kembali ke Menu Utama.",
+      "next": {
+        "0": "menu_utama"
+      }
     },
     "jam_buka": {
-        "response": "Kami buka setiap hari pukul 09:00 hingga 18:00.\n\nKetik 0 untuk kembali ke Menu Utama.",
-        "next": {
-            "0": "menu_utama",
-            "menu":"menu_utama"
-        }
+      "response": "Jam operasional kami:\nSetiap hari Senin-Sabtu, pukul 08:00 - 16:00.\n\nKetik 0 untuk kembali ke Menu Utama.",
+      "next": {
+        "0": "menu_utama"
+      }
     },
     "hubungi_kami": {
-        "response": "Hubungi kami di support@example.com atau telepon di 123-456-789.\n\nKetik 0 untuk kembali ke Menu Utama.",
-        "next": {
-            "0": "menu_utama",
-            "menu":"menu_utama"
-        }
+      "response": "Hubungi kami melalui:\n- Email: info@lazsidogiri.org\n- Telepon: +62-341-xxxxxx\n\nKetik 0 untuk kembali ke Menu Utama.",
+      "next": {
+        "0": "menu_utama"
+      }
     }
-}
+  }
+  

@@ -10,7 +10,7 @@ const WhatsAppStatus = () => {
   const [status, setStatus] = useState({
     isConnected: false,
     qrCode: null,
-    codePairing: null,
+    //codePairing: null,
   });
   const [isLoading, setIsLoading] = useState(true);
 
