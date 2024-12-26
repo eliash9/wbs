@@ -8,7 +8,7 @@ const PairingForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:8989/pairing", {
+      const response = await fetch("https://wbs-pr8lla.fly.dev/pairing", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
