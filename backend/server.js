@@ -144,8 +144,8 @@ client.on("ready", () => {
   console.log("WhatsApp client is ready!");
 });
 
-//auto response
-
+//auto response buka komen untuk aktifkan
+/*
 // Baca file JSON
 const menuData = JSON.parse(fs.readFileSync("./menuData.json", "utf-8"));
 const userSessions = {}; // Objek untuk menyimpan status pengguna sementara
@@ -175,7 +175,7 @@ client.on("message", async (message) => {
     }
   }
 });
-
+*/
 //end
 
 client.on("disconnected", () => {
