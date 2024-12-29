@@ -146,32 +146,62 @@ client.on("ready", () => {
   console.log("WhatsApp client is ready!");
 });
 
-//auto response
+client.on("message", async (msg) => {
+  const senderNumber = msg.from;
+  const message = msg.body;
 
-// Baca file JSON
-const menuData = JSON.parse(fs.readFileSync("./menuData.json", "utf-8"));
-const userSessions = {}; // Objek untuk menyimpan status pengguna sementara
+  console.log(`Received message from ${senderNumber}: ${message}`);
 
-client.on("message", async (message) => {
-  const userId = message.from;
-  const receivedText = message.body.toLowerCase().trim();
-  let chat = await message.getChat();
-  let contact = await chat.getContact();
-  if (contact.isGroup === true) {
-    console.log("Ignoring group message");
-    return;
-  } else {
-    if (!userSessions[userId]) {
-      // Jika pengguna baru, tetapkan ke menu utama
-      userSessions[userId] = "menu_utama";
+  let mediaPart = null;
+
+  if (msg.hasMedia) {
+    const media = await msg.downloadMedia();
+    mediaPart = await mediaToGenerativePart(media);
+  }
+
+  await run(message, senderNumber, mediaPart);
+});
+
+let chat = null;
+
+async function run(message, senderNumber, mediaPart) {
+  try {
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+
+    if (!chat) {
+      chat = model.startChat({
+        generationConfig: {
+          maxOutputTokens: 500,
+        },
+      });
     }
-    const currentSession = userSessions[userId];
-    const currentMenu = menuData[currentSession];
+/*
+    const prompt = [];
+    prompt.push(message);
 
-    if (currentMenu.next && currentMenu.next[receivedText]) {
-      userSessions[userId] = currentMenu.next[receivedText]; // Perbarui status
-      const nextMenu = menuData[userSessions[userId]];
-      message.reply(nextMenu.response);
+    if (mediaPart) {
+      prompt.push(mediaPart);
+    }
+*/
+// Prompt khusus untuk bot sebagai layanan pelanggan LAZ Sidogiri
+const prompt = [
+  "Anda adalah asisten layanan pelanggan yang ramah dan profesional untuk Lembaga Amil Zakat (LAZ) Sidogiri, sebuah organisasi nirlaba skala nasional yang mengelola zakat, infak, dan sedekah melalui program pemberdayaan masyarakat. Tugas Anda adalah memberikan informasi akurat dan membantu pertanyaan pelanggan terkait layanan dan program LAZ Sidogiri.",
+  `Pelanggan: ${message}`,
+];
+
+if (mediaPart) {
+  prompt.push("Pelanggan juga mengirimkan lampiran:");
+  prompt.push(mediaPart);
+}
+
+
+    const result = await chat.sendMessage(prompt);
+    const response = await result.response;
+    const text = response.text();
+
+    if (text) {
+      console.log("Generated Text:", text);
+      await sendWhatsAppMessage(text, senderNumber);
     } else {
       console.error("This problem is related to Model Limitations and API Rate Limits");
     }
@@ -188,9 +218,8 @@ async function sendWhatsAppMessage(text, toNumber) {
     console.error("Failed to send WhatsApp message:");
     console.error("Error details:", err);
   }
-});
+}
 
-//end
 
 client.on("disconnected", () => {
   isClientReady = false;
