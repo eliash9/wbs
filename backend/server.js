@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const { Client, MessageMedia } = require("whatsapp-web.js");
+const { Client, MessageMedia,LocalAuth } = require("whatsapp-web.js");
 const qrcode = require("qrcode-terminal");
 const jwt = require("jsonwebtoken");
 const multer = require("multer");
@@ -90,6 +90,7 @@ const authenticateToken = (req, res, next) => {
 
 // WhatsApp client setup
 const client = new Client({
+  authStrategy: new LocalAuth(),
   puppeteer: {
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   },
@@ -151,20 +152,20 @@ client.on("message", async (msg) => {
   const message = msg.body;
 
   console.log(`Received message from ${senderNumber}: ${message}`);
-
+/*
   let mediaPart = null;
 
   if (msg.hasMedia) {
     const media = await msg.downloadMedia();
     mediaPart = await mediaToGenerativePart(media);
   }
-
-  await run(message, senderNumber, mediaPart);
+*/
+  await run(message, senderNumber);
 });
 
 let chat = null;
 
-async function run(message, senderNumber, mediaPart) {
+async function run(message, senderNumber) {
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
@@ -185,14 +186,23 @@ async function run(message, senderNumber, mediaPart) {
 */
 // Prompt khusus untuk bot sebagai layanan pelanggan LAZ Sidogiri
 const prompt = [
-  "Anda adalah asisten layanan pelanggan yang ramah dan profesional untuk Lembaga Amil Zakat (LAZ) Sidogiri, sebuah organisasi nirlaba skala nasional yang mengelola zakat, infak, dan sedekah melalui program pemberdayaan masyarakat. Tugas Anda adalah memberikan informasi akurat dan membantu pertanyaan pelanggan terkait layanan dan program LAZ Sidogiri.",
+  `Anda adalah asisten layanan pelanggan yang ramah dan profesional untuk Lembaga Amil Zakat (LAZ) Sidogiri, sebuah organisasi nirlaba skala nasional yang mengelola zakat, infak, dan sedekah melalui program pemberdayaan masyarakat. 
+  Website resmi https://lazsidogiri.org dan website donasi https://sidogiripeduli.org. qris:https://lazsidogiri.org/uploads/blocks/block_662f382e2a6da5-49296455.jpg. alamat kantor cabang: https://lazsidogiri.org/service-point,Kantor Pusat : Gedung Sidogiri Corp. Lantai I, Jalan Raya Sidogiri, Desa Sidogiri RT. 01/ RW. 02, Kec. Kraton, Kab. Pasuruan, Jawa Timur, 67151. sosial media : https://www.facebook.com/lazsidogiriorg, https://www.instagram.com/lazsidogiriorg,https://www.tiktok.com/@lazsidogiri. Rekening : E-Maal: 174451201730000 ,
+BMT UGT Nusantara: 1011101446201 ,
+BMT: 1041101939201 ,
+Mandiri: 1440021984536 ,
+BCA: 089.999.7001 ,
+BSI: 7772006025 ,
+BNI: 2005333350 ,
+BRI: 006501123456304 
+Setelah transfer, mohon konfirmasi melalui WA Center dengan format:
+#JenisZakat #Nama #Alamat #TglTransfer #Nominal
+Kirim ke https://wa.me/6282336793679
+Contoh: #ZakatProfesi #Abdullah #Surabaya #20-01-2024 #300.000.
+Tugas Anda adalah memberikan informasi akurat dan membantu pertanyaan pelanggan terkait layanan dan program LAZ Sidogiri. Gunakan formating text standart, dan kalimat lebih singkat.`,
   `Pelanggan: ${message}`,
 ];
 
-if (mediaPart) {
-  prompt.push("Pelanggan juga mengirimkan lampiran:");
-  prompt.push(mediaPart);
-}
 
 
     const result = await chat.sendMessage(prompt);
