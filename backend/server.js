@@ -90,10 +90,14 @@ const authenticateToken = (req, res, next) => {
 
 // WhatsApp client setup
 const client = new Client({
-  authStrategy: new LocalAuth(),
+  restartOnAuthFail: true,
   puppeteer: {
+    headless: true,
     args: ["--no-sandbox", "--disable-setuid-sandbox"],
   },
+  authStrategy: new LocalAuth({
+    clientId: "gemini-ai",
+  }),
 });
 
 
