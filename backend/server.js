@@ -213,7 +213,7 @@ Tugas Anda adalah memberikan informasi akurat dan membantu pertanyaan pelanggan 
 'armada yang tersedia : hiace, luxio,xenia dll. kamu pastikan kendaraan dalam keadaan prima dan seri terbaru dengan fasilitas lengkap','driver berpengalaman','ruang yang cukup untuk bagasi',
 'pembayaran bisa melalui driver saat tiba di lokasi tujuan',
 'beritahukan driver akan konfirmasi untuk lokasi dan penjemputan',
-'tarif setiap penumpang adalah Rp 175000, berikan diskon 10% jika memesan lebih dari 1 tiket'
+'tarif setiap penumpang adalah Rp 175000, berikan diskon 10% jika memesan lebih dari 1 tiket', `Pelanggan: ${message}`,
 ];
 
 
